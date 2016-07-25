@@ -117,6 +117,7 @@ public abstract class FormActivity extends AppCompatActivity
     }
 
     public void onSaveSuccess(String id){
+        setLoading(false);
         Intent in = new Intent();
         in.putExtra("id",id);
         setResult(RESULT_OK, in);

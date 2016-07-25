@@ -84,6 +84,14 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     protected FormModel model;
     private HashMap<String,View> btnDelArray = new HashMap<>();
 
+    protected String getLocalTable() {
+        throw new UnsupportedOperationException("local table must implemented");
+    }
+
+    protected FormModel getFormModel() {
+        return new FormModel(act, getLocalTable());
+    }
+
     public enum SaveType{
         SERVER,LOCAL, BOTH
     }
@@ -135,6 +143,8 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
         switch (field.getType()){
             case TEXT:
                 return getText(field);
+            case PASSWORD:
+                return getPassword(field);
             case TEXTAREA:
                 return getTextArea(field);
             case RADIO:
@@ -165,6 +175,35 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
         }
 
         txt.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        if(field.getBackground()!=0){
+            txt.setBackground(act.getResources().getDrawable(field.getBackground()));
+        }
+
+        txt.setPadding(getDp(7),0,0,getDp(7));
+        if(field.getValue()!=null) txt.setText(field.getValue());
+
+        views.put(field.getName(),txt);
+
+        if(wide) {
+            return getTitleWrap(txt,field);
+        }
+
+        txt.setHint(field.getTitle());
+        return txt;
+    }
+
+    private View getPassword(Field field){
+        EditText txt = new EditText(act);
+        txt.setLayoutParams(getDefaultLayoutParams());
+
+        if(field.getDrawable()!=0 && !wide){
+            txt.setCompoundDrawablesWithIntrinsicBounds( field.getDrawable(), 0, 0, 0);
+            txt.setCompoundDrawablePadding(getDp(7));
+        }
+
+        txt.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
         if(field.getBackground()!=0){
             txt.setBackground(act.getResources().getDrawable(field.getBackground()));
@@ -506,6 +545,7 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
 
     // FOR EDITING PURPOSE
     protected void initData(){
+        if(model==null) model = getFormModel();
         Bundle data = model.select(getDataId());
 
         for(String key:data.keySet()){
@@ -542,6 +582,7 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     private String getValue(Field f){
         switch (f.getType()){
             case TEXT:
+            case PASSWORD:
             case TEXTAREA:
             case NUMBER:
                 EditText txt = (EditText) views.get(f.getName());
@@ -1179,7 +1220,7 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     }
 
     protected String insertToLocal(@Nullable  String id,Bundle b){
-        if(model==null) throw new NullPointerException("call setmodel() first");
+        if(model==null) model = getFormModel();
         model.setData(b);
         return model.insert(id);
     }
@@ -1238,7 +1279,7 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
 
     public String getDataId(){
         if(dataId==null){
-            throw new NullPointerException("Data id not set");
+            throw new UnsupportedOperationException("Data id not set");
         }
         return dataId;
     }
@@ -1254,7 +1295,6 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     public void setModel(FormModel model) {
         this.model = model;
     }
-
 
 
     protected abstract FormInternetConnection getInternetConnection(Bundle b, FormInternetConnection.Listener listener);
