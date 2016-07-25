@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#E1BEE7</color>
+    <color name="overlay">#80BEE7</color>
+
+    <color name="primaryDark">#927098</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="semiTransparent">#40000000</color>
+    <color name="semiTransparentDark">#75000000</color>
+
+    <color name="primaryBlack">#333</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="semiTransparentLight">#20000000</color>
+    <color name="bluePrimary">#4285F4</color>
+
+    <color name="lightGrey">#ddd</color>
+    <color name="lightRed">#F59E9E</color>
+</resources>
