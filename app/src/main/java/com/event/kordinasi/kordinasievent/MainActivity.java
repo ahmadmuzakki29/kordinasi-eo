@@ -16,4 +16,8 @@ public class MainActivity extends AppCompatActivity {
     public void user(View v){
         startActivity(new Intent(this,UserActivity.class));
     }
+
+    public void event(View v){
+        startActivity(new Intent(this,EventActivity.class));
+    }
 }

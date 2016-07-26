@@ -3,21 +3,27 @@ package com.event.kordinasi.kordinasievent;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.muzakki.ahmad.lib.Constant;
+import com.muzakki.ahmad.material.form.DeleteDialog;
 import com.muzakki.ahmad.material.form.Field;
 import com.muzakki.ahmad.material.form.Fields;
 import com.muzakki.ahmad.material.form.Form;
 import com.muzakki.ahmad.material.form.FormActivity;
 import com.muzakki.ahmad.material.form.FormInternetConnection;
+import com.muzakki.ahmad.material.form.FormModel;
 import com.muzakki.ahmad.material.form.Item;
 
 import java.util.ArrayList;
 
-public class UserFormActivity extends FormActivity {
-    UserInternetConnection ic;
-    UserForm form;
+public class UserFormActivity extends FormActivity implements DeleteDialog.Listener {
     Fields fields;
+    private UserForm form;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +48,51 @@ public class UserFormActivity extends FormActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.i("jeki",getAction().toString());
+        if(getAction()== Form.Action.ADD) {
+            return super.onCreateOptionsMenu(menu);
+        }else{
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.user_edit,menu);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(getAction()== Form.Action.ADD) {
+            return super.onOptionsItemSelected(item);
+        }else {
+            if(item.getItemId()==R.id.menu_save){
+                return super.onOptionsItemSelected(item);
+            }else{
+                DeleteDialog delete = new DeleteDialog(this, form.getDataId(), form.getSaveType(), this){
+                    @Override
+                    protected String getTable() {
+                        return "user";
+                    }
+
+                    @Override
+                    protected String getDeleteUrl(String id) {
+                        return Constant.HOST+"/delete/user/"+id;
+                    }
+                };
+                delete.showDialog("User");
+                return true;
+            }
+        }
+    }
+
+    @Override
     protected Form getForm() {
-        if(form==null) form = new UserForm(this,fields, Form.SaveType.BOTH, getAction(),this);
+        if(form==null) form = new UserForm(this, fields, Form.SaveType.BOTH, getAction(), this);
         return form;
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+        finish();
     }
 
     private class UserForm extends Form{
@@ -55,13 +103,26 @@ public class UserFormActivity extends FormActivity {
 
         @Override
         protected FormInternetConnection getInternetConnection(Bundle b, FormInternetConnection.Listener listener) {
-            if(ic==null) ic = new UserInternetConnection(UserFormActivity.this,b,listener);
-            return ic;
+            return new UserInternetConnection(UserFormActivity.this,b,listener);
         }
 
         @Override
-        public String getLocalTable() {
-            return "user";
+        protected FormModel getFormModel() {
+            return new UserFormModel(UserFormActivity.this,"user");
+        }
+    }
+
+    private class UserFormModel extends FormModel{
+
+        public UserFormModel(Context context, String table) {
+            super(context, table);
+        }
+
+        @Override
+        public String update(String id) {
+            Bundle data = getData();
+            data.remove("password");
+            return super.update(id);
         }
     }
 
