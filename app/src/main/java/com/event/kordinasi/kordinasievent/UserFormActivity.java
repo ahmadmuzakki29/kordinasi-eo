@@ -119,11 +119,11 @@ public class UserFormActivity extends FormActivity implements DeleteDialog.Liste
         }
 
         @Override
-        public String update(String id) {
-            Bundle data = getData();
+        public void setData(Bundle data) {
             data.remove("password");
-            return super.update(id);
+            super.setData(data);
         }
+
     }
 
     private class UserInternetConnection extends FormInternetConnection{

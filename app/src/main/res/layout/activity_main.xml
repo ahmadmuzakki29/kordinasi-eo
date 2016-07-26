@@ -15,13 +15,16 @@
             android:layout_height="wrap_content"
             android:text="User"
             android:onClick="user"
-            android:id="@+id/btn_user" />
+            android:id="@+id/btn_user"
+            android:background="@drawable/bg_btn"
+            android:layout_marginBottom="50dp"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Event"
             android:onClick="event"
-            android:id="@+id/btn_event" />
+            android:id="@+id/btn_event"
+            android:background="@drawable/bg_btn"/>
     </LinearLayout>
 </RelativeLayout>
