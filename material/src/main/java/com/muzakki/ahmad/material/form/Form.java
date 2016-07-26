@@ -71,8 +71,8 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     private HashMap<String,View> views = new HashMap<>();
     private String mCurrentPhotoPath;
     int activityCode;
-    private static final int MAX_SIZE_SQUARE = 600;
-    private static final int MAX_SIZE_TOP = 750,MAX_SIZE_BOTTOM = 500;
+    private static final int MAX_SIZE_SQUARE = 400;
+    private static final int MAX_SIZE_TOP = 400,MAX_SIZE_BOTTOM = 300;
     private static final String IMAGE_DIR = "images";
     private boolean loadingState;
     private SaveType saveType;
@@ -84,16 +84,8 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     protected FormModel model;
     private HashMap<String,View> btnDelArray = new HashMap<>();
 
-    protected String getLocalTable() {
-        throw new UnsupportedOperationException("local table must implemented");
-    }
-
-    protected FormModel getFormModel() {
-        return new FormModel(act, getLocalTable());
-    }
-
     public enum SaveType{
-        SERVER,LOCAL, BOTH
+        SERVER,LOCAL, type, BOTH
     }
 
     public Form(AppCompatActivity act, Fields fields,SaveType saveType,Action action,Listener listener){
@@ -543,6 +535,20 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     }
 
 
+    protected String getLocalTable() {
+        throw new UnsupportedOperationException("local table must implemented");
+    }
+
+
+    public SaveType getSaveType() {
+        return saveType;
+    }
+
+    protected FormModel getFormModel() {
+        return new FormModel(act, getLocalTable());
+    }
+
+
     // FOR EDITING PURPOSE
     protected void initData(){
         if(model==null) model = getFormModel();
@@ -944,7 +950,7 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
         }
 
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String filename = field.getName()+"_"+timestamp+"_"+Helper.randomString();
+        String filename = field.getName()+"_"+timestamp+"_"+Helper.randomString()+".jpg";
         File dir = act.getDir(IMAGE_DIR, Context.MODE_PRIVATE);
         File f = new File(dir,filename);
         FileOutputStream out = null;
@@ -1297,7 +1303,9 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     }
 
 
-    protected abstract FormInternetConnection getInternetConnection(Bundle b, FormInternetConnection.Listener listener);
+    protected FormInternetConnection getInternetConnection(Bundle b, FormInternetConnection.Listener listener){
+        throw new UnsupportedOperationException("you should implement internet connection");
+    }
 
     public interface Listener{
         void setLoading(boolean b);

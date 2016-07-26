@@ -7,21 +7,22 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.json.JSONObject;
 
 /**
  * Created by jeki on 6/14/16.
  */
-public abstract class DeleteDialog implements FormInternetConnection.Listener {
+public class DeleteDialog implements FormInternetConnection.Listener {
     private final Context ctx;
     private final String id;
     private final ProgressDialog progress;
     private final Listener listener;
+    private final Form.SaveType saveType;
 
-    public DeleteDialog(Context ctx,String id,Listener listener){
+    public DeleteDialog(Context ctx, String id, Form.SaveType type,Listener listener){
         this.ctx = ctx;
         this.id = id;
+        this.saveType = type;
         progress = new ProgressDialog(ctx);
         progress.setMessage("Mohon Tunggu...");
         this.listener = listener;
@@ -43,7 +44,7 @@ public abstract class DeleteDialog implements FormInternetConnection.Listener {
 
     private void doDelete(){
         progress.show();
-        Form.SaveType saveType = getSaveType();
+
         switch (saveType){
             case BOTH:
             case SERVER:
@@ -64,13 +65,20 @@ public abstract class DeleteDialog implements FormInternetConnection.Listener {
     }
 
     protected FormInternetConnection getInternetConnection(){
-        return new FormInternetConnection(ctx,null,getTable(), this);
+        return new FormInternetConnection(ctx,null, this){
+            @Override
+            protected String getDeleteUrl(String id) {
+                return DeleteDialog.this.getDeleteUrl(id);
+            }
+        };
     }
 
-    protected abstract Form.SaveType getSaveType();
+    protected String getDeleteUrl(String id) {
+        throw new UnsupportedOperationException("delete url not implemented");
+    }
 
     protected String getTable() {
-        throw new NotImplementedException("implement table name");
+        throw new UnsupportedOperationException("implement table name");
     }
 
     protected FormModel getModel(){
@@ -85,7 +93,7 @@ public abstract class DeleteDialog implements FormInternetConnection.Listener {
 
     @Override
     public void onServerSuccess(JSONObject result, Bundle data) {
-        if(getSaveType()== Form.SaveType.BOTH){
+        if(saveType== Form.SaveType.BOTH){
             deleteToLocal();
         }
         progress.hide();

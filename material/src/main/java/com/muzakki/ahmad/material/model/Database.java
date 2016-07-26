@@ -14,17 +14,19 @@ import java.util.ArrayList;
  * Created by jeki on 7/12/16.
  */
 public class Database extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "kordinasi.db"; // change this
     private static final String[] TABLES = new String[]{
-            "create table user(id integer priary key,username text," +
-                    "nama text, tipe_user text)"
+            "create table user(id integer primary key,username text," +
+                    "nama text, tipe_user text)",
+            "create table event(id integer primary key, nama text, tanggal text," +
+                    "tempat text, guest_star text, foto text,created_by text)"
     };
 
 
     private void resetTable(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("drop table user");
-        sqLiteDatabase.execSQL(TABLES[0]);
+        sqLiteDatabase.execSQL("drop table event");
+        sqLiteDatabase.execSQL(TABLES[1]);
     }
 
     public Database(Context context){

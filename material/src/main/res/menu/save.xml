@@ -4,5 +4,6 @@
     <item android:title="@string/simpan"
         android:icon="@android:drawable/ic_menu_save"
         app:showAsAction="always"
+        android:id="@+id/menu_save"
         />
 </menu>

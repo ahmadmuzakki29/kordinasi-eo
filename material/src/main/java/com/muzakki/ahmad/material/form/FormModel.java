@@ -34,7 +34,7 @@ public class FormModel extends Database {
             val.put(e, data.getString(e));
         }
 
-        val.put("doccreate", getTimeStamp());
+//        val.put("doccreate", getTimeStamp());
         long newid = db.insert(table, null, val);
         db.close();
         return String.valueOf(newid);

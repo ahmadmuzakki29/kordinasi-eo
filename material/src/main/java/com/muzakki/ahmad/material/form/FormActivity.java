@@ -94,8 +94,10 @@ public abstract class FormActivity extends AppCompatActivity
         if (id == android.R.id.home) {
             finish();
             return true;
-        }else{ // do saving
+        }else if(id == R.id.menu_save){ // do saving
             return form.save();
+        }else{
+            return super.onOptionsItemSelected(item);
         }
     }
 

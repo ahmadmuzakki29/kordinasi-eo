@@ -13,19 +13,11 @@ import org.json.JSONObject;
  */
 public class FormInternetConnection extends InternetConnection {
     private final Bundle data;
-    private String table;
     private Listener listener;
 
     public FormInternetConnection(Context ctx, Bundle b, Listener listener) {
         super(ctx);
         this.data = b;
-        this.listener = listener;
-    }
-
-    public FormInternetConnection(Context ctx, Bundle b, String table, Listener listener) {
-        super(ctx);
-        this.data = b;
-        this.table = table;
         this.listener = listener;
     }
 
@@ -63,7 +55,7 @@ public class FormInternetConnection extends InternetConnection {
     }
 
     protected String getDeleteUrl(String id){
-        throw new NotImplementedException("Delete Url not Implemented");
+        throw new UnsupportedOperationException("Delete Url not Implemented");
     }
 
     public void delete(String id){
