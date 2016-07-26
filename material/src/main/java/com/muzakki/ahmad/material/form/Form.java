@@ -653,6 +653,7 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
             switch (f.getType()){
                 case TEXT:
                 case TEXTAREA:
+                case PASSWORD:
                 case IMAGE:
                 case NUMBER:
                     value = f.getValue();
