@@ -12,9 +12,6 @@ public abstract class DetailLocal extends Detail{
     private final Fields fields;
     private final DetailActivity ctx;
 
-    public DetailLocal(DetailActivity ctx,String id){
-        this(ctx,id,null);
-    }
 
     public DetailLocal(DetailActivity ctx,String id, Fields fields){
         super(ctx,id);

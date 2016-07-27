@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -52,7 +51,6 @@ public abstract class Detail extends LinearLayout {
                 FrameLayout.LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
 
-        if(fields==null) throw new NotImplementedException("you should implement initComponent");
         // init value
         for(Field field: fields){
             String name = field.getName();
@@ -60,7 +58,7 @@ public abstract class Detail extends LinearLayout {
             field.setValue(val);
         }
         ctx.setTitleSubtitle(getTitle(data),getSubtitle(data));
-        ctx.setCoverImage(getImage(data));
+        //ctx.setCoverImage(getImage(data));
 
         ListIterator<Field> iterator = fields.listIterator();
 
@@ -114,7 +112,6 @@ public abstract class Detail extends LinearLayout {
 
     private String getValue(Field field){
         String value = field.getValue();
-        Log.i("jeki",""+field.getType());
         switch (field.getType()) {
             case DATE:
                 return Helper.decodeDate(value);

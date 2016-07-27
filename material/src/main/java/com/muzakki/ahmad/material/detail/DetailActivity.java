@@ -39,7 +39,7 @@ public abstract class DetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_detail);
+        setContentView(getLayout());
 
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
@@ -57,6 +57,10 @@ public abstract class DetailActivity extends AppCompatActivity
 
     }
 
+    protected int getLayout(){
+        return R.layout.layout_detail;
+    }
+
     protected void setTitleSubtitle(String title,String subtitle){
         toolbarHeaderView.bindTo(title, subtitle);
         floatHeaderView.bindTo(title, subtitle);
@@ -66,11 +70,14 @@ public abstract class DetailActivity extends AppCompatActivity
         image.setImageBitmap(bm);
     }
 
-    protected void setDetail(Detail detail){
+    protected void render(){
+        detail = getDetail();
         ViewGroup parent = (ViewGroup) findViewById(R.id.scroll);
-        this.detail = detail;
         parent.addView(detail);
+        detail.render();
     }
+
+    protected abstract Detail getDetail();
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
