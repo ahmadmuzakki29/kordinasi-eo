@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.event.kordinasi.kordinasievent">
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,7 +20,8 @@
         <activity android:name=".UserActivity" />
         <activity android:name=".UserFormActivity" />
         <activity android:name=".EventActivity" />
-        <activity android:name=".EventFormActivity"></activity>
+        <activity android:name=".EventFormActivity" />
+        <activity android:name=".DetailEventActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>

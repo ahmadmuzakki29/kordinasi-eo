@@ -84,6 +84,13 @@ public class EventActivity extends ListActivity {
         protected ViewHolder getViewHolder(RowView rv) {
             return new EventView(rv);
         }
+
+        @Override
+        public void onListClick(Bundle data) {
+            Intent in = new Intent(EventActivity.this, DetailEventActivity.class);
+            in.putExtra("id",data.getString("id"));
+            startActivity(in);
+        }
     }
 
     private class EventView extends ListViewHolder{

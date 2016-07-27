@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.muzakki.ahmad.lib.Constant;
-import com.muzakki.ahmad.material.form.Field;
 import com.muzakki.ahmad.material.form.Fields;
 import com.muzakki.ahmad.material.form.Form;
 import com.muzakki.ahmad.material.form.FormActivity;
@@ -17,18 +16,7 @@ public class EventFormActivity extends FormActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fields = new Fields();
-
-        Field foto = new Field("foto", Field.Type.IMAGE);
-        foto.setOrientation(Field.Orientation.SQUARE);
-        fields.add(foto);
-        fields.add(new Field("nama", Field.Type.TEXT));
-
-        fields.add(new Field("tanggal", Field.Type.DATE));
-        fields.add(new Field("tempat", Field.Type.TEXT));
-        fields.add(new Field("guest_star", Field.Type.TEXT));
-
-
+        fields = new EventFields();
         render();
     }
 
