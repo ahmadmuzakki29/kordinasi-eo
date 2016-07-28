@@ -60,8 +60,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="bottom"
             android:background="@color/primary"
-            app:tabMode="scrollable"
-            app:tabContentStart="72dp" />
+            app:tabMode="scrollable"/>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager

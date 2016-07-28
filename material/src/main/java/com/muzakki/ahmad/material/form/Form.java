@@ -224,7 +224,8 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
             txt.setCompoundDrawablePadding(getDp(7));
         }
 
-        txt.setInputType(InputType.TYPE_CLASS_TEXT);
+        txt.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        txt.setSingleLine(false);
 
         if(field.getBackground()!=0){
             txt.setBackground(act.getResources().getDrawable(field.getBackground()));

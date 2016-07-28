@@ -18,6 +18,10 @@ import java.util.Iterator;
  * Created by jeki on 6/4/16.
  */
 public class ListModel extends Database {
+    public String getTable() {
+        return table;
+    }
+
     private final String table;
 
     public ListModel(Context context, String table) {
