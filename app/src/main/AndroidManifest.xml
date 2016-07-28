@@ -21,7 +21,10 @@
         <activity android:name=".UserFormActivity" />
         <activity android:name=".EventActivity" />
         <activity android:name=".EventFormActivity" />
-        <activity android:name=".DetailEventActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".DetailEventActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".JobFormActivity"></activity>
     </application>
 
 </manifest>

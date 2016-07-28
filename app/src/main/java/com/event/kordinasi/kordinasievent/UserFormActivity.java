@@ -54,7 +54,7 @@ public class UserFormActivity extends FormActivity implements DeleteDialog.Liste
             return super.onCreateOptionsMenu(menu);
         }else{
             MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.user_edit,menu);
+            inflater.inflate(R.menu.save_delete,menu);
             return true;
         }
     }
@@ -92,6 +92,7 @@ public class UserFormActivity extends FormActivity implements DeleteDialog.Liste
 
     @Override
     public void onDeleteSuccess() {
+        setResult(RESULT_OK);
         finish();
     }
 
