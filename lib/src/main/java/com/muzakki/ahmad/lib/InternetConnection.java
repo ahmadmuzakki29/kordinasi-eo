@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -269,7 +268,7 @@ public class InternetConnection implements Handler.Callback{
     }
 
     protected void onTimeout(){
-        throw new NotImplementedException("Timeout not implemented");
+        Log.e("jeki","Connection Timeout");
     }
 
     protected void onNull(NullPointerException ex){

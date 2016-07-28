@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         protected void onSuccess(JSONObject result) {
             try {
                 if(result.getBoolean("success")){
-                    loginSukses(result);
+                    loginSukses(result.getJSONObject("data"));
                 }else{
                     loginGagal(result.getString("message"));
                 }
@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
 
     };
 
