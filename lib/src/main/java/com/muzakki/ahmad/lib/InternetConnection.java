@@ -390,9 +390,7 @@ public class InternetConnection implements Handler.Callback{
     }
 
     private HashMap<String,String> getHeaders(){
-        HashMap<String,String> headers = new HashMap<>();
-        headers.put(Constant.AUTH,com.muzakki.ahmad.lib.Constant.API_KEY);
-        return headers;
+        return Constant.getHeaders();
     }
 
     public void addHeaders(String key,String value){

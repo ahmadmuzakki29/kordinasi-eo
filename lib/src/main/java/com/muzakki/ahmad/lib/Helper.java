@@ -19,6 +19,8 @@ import java.util.Map;
  */
 public class Helper {
 
+    static final String PREF = "com.muzakki.ahmad.notification";
+
     public static Bundle jsonToBundle(JSONObject obj)throws JSONException{
         Iterator<String> iter = obj.keys();
         Bundle b = new Bundle();
@@ -71,7 +73,7 @@ public class Helper {
 
     public static void setPref(Context ctx, String key, String value){
         SharedPreferences sharedPref = ctx.getSharedPreferences(
-                Constant.PREF, Context.MODE_PRIVATE);
+                PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(key,value);
         editor.apply();
@@ -79,7 +81,7 @@ public class Helper {
 
     public static void setPref(Context ctx, String key, Boolean value){
         SharedPreferences sharedPref = ctx.getSharedPreferences(
-                Constant.PREF, Context.MODE_PRIVATE);
+                PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(key,value);
         editor.apply();
@@ -87,7 +89,7 @@ public class Helper {
 
     public static void clearPref(Context ctx){
         SharedPreferences sharedPref = ctx.getSharedPreferences(
-                Constant.PREF, Context.MODE_PRIVATE);
+                PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
         editor.apply();
@@ -95,13 +97,13 @@ public class Helper {
 
     public static String getPrefString(Context ctx, String key){
         SharedPreferences sharedPref = ctx.getSharedPreferences(
-                Constant.PREF, Context.MODE_PRIVATE);
+                PREF, Context.MODE_PRIVATE);
         return sharedPref.getString(key,null);
     }
 
     public static Boolean getPrefBoolean(Context ctx, String key){
         SharedPreferences sharedPref = ctx.getSharedPreferences(
-                Constant.PREF, Context.MODE_PRIVATE);
+                PREF, Context.MODE_PRIVATE);
         return sharedPref.getBoolean(key,false);
     }
 
