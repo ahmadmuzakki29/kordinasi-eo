@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -210,15 +211,20 @@ public class DetailEventActivity extends DetailTabActivity implements List.Liste
                         if(status.getBoolean("selesai")){
                             getIcon().setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.check));
                         }else{
-                            getIcon().setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.minus));
+                            getIcon().setVisibility(GONE);
                         }
                     } catch (JSONException e) {
-                        getIcon().setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.minus));
+                        getIcon().setVisibility(GONE);
                         e.printStackTrace();
                     }
 
                 }
             };
+        }
+
+        @Override
+        protected RowView getRowView(ViewGroup parent) {
+            return new RowView(parent,R.layout.row_job);
         }
 
         @Override
