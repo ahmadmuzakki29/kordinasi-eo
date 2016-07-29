@@ -70,6 +70,7 @@ public class DetailEventActivity extends DetailTabActivity implements List.Liste
             in.putExtra("action", Form.Action.ADD);
             in.putExtra("title","Tambah Job");
             startActivityForResult(in,1);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -228,7 +229,8 @@ public class DetailEventActivity extends DetailTabActivity implements List.Liste
         @Override
         public void onListClick(Bundle data) {
             Intent in = new Intent(DetailEventActivity.this,JobFormActivity.class);
-            in.putExtra("id",id);
+            in.putExtra("id",data.getString("id"));
+            in.putExtra("id_event",id);
             in.putExtra("action", Form.Action.EDIT);
             in.putExtra("title","Edit Job");
             startActivityForResult(in,1);

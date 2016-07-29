@@ -22,7 +22,7 @@ public class JobFormActivity extends FormActivity implements DeleteDialog.Listen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        id_event = getIntent().getStringExtra("id");
+        id_event = getIntent().getStringExtra("id_event");
         fields = new Fields();
         Field nama = new Field("nama", Field.Type.TEXT);
         nama.setTitle("Nama Job");
@@ -44,27 +44,26 @@ public class JobFormActivity extends FormActivity implements DeleteDialog.Listen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(getAction()== Form.Action.ADD) {
-            return super.onOptionsItemSelected(item);
-        }else {
+        if(getAction()== Form.Action.EDIT) {
             if(item.getItemId()==R.id.menu_save){
-                return super.onOptionsItemSelected(item);
-            }else{
-                DeleteDialog delete = new DeleteDialog(this, form.getDataId(), form.getSaveType(), this){
-                    @Override
-                    protected String getTable() {
-                        return "user";
-                    }
+                return form.save();
+            }else if(item.getItemId()==R.id.menu_delete) {
+               DeleteDialog delete = new DeleteDialog(this, form.getDataId(), form.getSaveType(), this) {
+                   @Override
+                   protected String getTable() {
+                       return "user";
+                   }
 
-                    @Override
-                    protected String getDeleteUrl(String id) {
-                        return Constant.HOST+"/delete/user/"+id;
-                    }
-                };
-                delete.showDialog("User");
-                return true;
+                   @Override
+                   protected String getDeleteUrl(String id) {
+                       return Constant.HOST + "/delete/user/" + id;
+                   }
+               };
+               delete.showDialog("User");
+               return true;
             }
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
