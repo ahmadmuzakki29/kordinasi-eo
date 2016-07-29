@@ -410,7 +410,7 @@ public class InternetConnection implements Handler.Callback{
         private final String boundary;
         private final OutputStream outputStream;
         private final PrintWriter writer;
-        private static final String LINE_FEED = "\r\n";
+        private static final String LINE_FEED = "\n";
         private final String charset = "UTF-8";
 
         MultiPartPost(String requestURL)throws IOException{
@@ -489,7 +489,6 @@ public class InternetConnection implements Handler.Callback{
         public String execute() throws IOException {
 
 
-            writer.append(LINE_FEED).flush();
             writer.append("--" + boundary + "--").append(LINE_FEED);
             writer.close();
             StringBuffer response = new StringBuffer();
