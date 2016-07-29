@@ -29,6 +29,9 @@ import com.muzakki.ahmad.material.list.ListModel;
 import com.muzakki.ahmad.material.list.ListViewHolder;
 import com.muzakki.ahmad.material.list.RowView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -202,7 +205,18 @@ public class DetailEventActivity extends DetailTabActivity implements List.Liste
                 public void onBindView(Bundle row) {
                     getTitle().setText(row.getString("nama"));
                     ((TextView)getDescription()).setText(row.getString("tugas"));
-                    getIcon().setVisibility(GONE);
+                    try {
+                        JSONObject status = new JSONObject(row.getString("status"));
+                        if(status.getBoolean("selesai")){
+                            getIcon().setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.check));
+                        }else{
+                            getIcon().setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.minus));
+                        }
+                    } catch (JSONException e) {
+                        getIcon().setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.minus));
+                        e.printStackTrace();
+                    }
+
                 }
             };
         }

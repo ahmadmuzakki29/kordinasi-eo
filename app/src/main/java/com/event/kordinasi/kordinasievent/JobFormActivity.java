@@ -12,6 +12,9 @@ import com.muzakki.ahmad.material.form.Fields;
 import com.muzakki.ahmad.material.form.Form;
 import com.muzakki.ahmad.material.form.FormActivity;
 import com.muzakki.ahmad.material.form.FormInternetConnection;
+import com.muzakki.ahmad.material.form.Item;
+
+import java.util.ArrayList;
 
 public class JobFormActivity extends FormActivity implements DeleteDialog.Listener {
 
@@ -24,6 +27,11 @@ public class JobFormActivity extends FormActivity implements DeleteDialog.Listen
         super.onCreate(savedInstanceState);
         id_event = getIntent().getStringExtra("id_event");
         fields = new Fields();
+        Field status = new Field("status", Field.Type.CHECKBOX);
+        ArrayList<Item> items= new ArrayList<>();
+        items.add(new Item("selesai"));
+        status.setItems(items);
+        fields.add(status);
         Field nama = new Field("nama", Field.Type.TEXT);
         nama.setTitle("Nama Job");
         fields.add(nama);
