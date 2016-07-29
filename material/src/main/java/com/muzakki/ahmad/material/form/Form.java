@@ -20,6 +20,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.text.InputType;
 import android.util.Log;
@@ -29,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,6 +47,7 @@ import com.muzakki.ahmad.lib.InternetConnection;
 import com.muzakki.ahmad.material.R;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -80,7 +83,6 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     private Bundle imageMaster = new Bundle();
     private Action action = null;
     private String dataId;
-    private String token;
     protected FormModel model;
     private HashMap<String,View> btnDelArray = new HashMap<>();
 
@@ -151,6 +153,8 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
                 return getPicker(field);
             case DATE:
                 return getDate(field);
+            case CHECKBOX:
+                return getCheckbox(field);
             case SEPARATOR:
                 return getSeparator();
             default: return null;
@@ -247,7 +251,13 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     private View getRadio(Field field) {
         ArrayList<Item> items = field.getItems();
         RadioGroup rg = new RadioGroup(act);
-        rg.setOrientation(LinearLayout.HORIZONTAL);
+        boolean horizontal = false;
+        if(wide || items.size()<3) {
+            horizontal = true;
+            rg.setOrientation(LinearLayout.HORIZONTAL);
+        }else{
+            rg.setOrientation(LinearLayout.VERTICAL);
+        }
         rg.setLayoutParams(getDefaultLayoutParams());
 
         int i = -1;
@@ -275,7 +285,7 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
                 }
             }
 
-            if(i!=items.size()-1){
+            if(horizontal && i!=items.size()-1){
                 rb.setLayoutParams(lp);
             }
 
@@ -535,6 +545,64 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
         return v;
     }
 
+    private View getCheckbox(Field field){
+        ArrayList<Item> items = field.getItems();
+        LinearLayout wrapper = new LinearLayout(act);
+        boolean horizontal = false;
+        if(wide || items.size()<3){
+            horizontal=true;
+            wrapper.setOrientation(LinearLayout.HORIZONTAL);
+        }else{
+            wrapper.setOrientation(LinearLayout.VERTICAL);
+        }
+
+        wrapper.setLayoutParams(getDefaultLayoutParams());
+        int i = -1;
+        for(Item item:items){
+            i++;
+            AppCompatCheckBox cb = new AppCompatCheckBox(act);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT);
+
+
+            if(field.getValue()!=null){
+                JSONObject val;
+                try {
+                    val = new JSONObject(field.getValue());
+                    if(item.getKode()==null){
+                        if(val.getBoolean(item.getValue())){
+                            cb.setChecked(true);
+                        }
+                    }else{
+                        if(val.getBoolean(item.getKode())){
+                            cb.setChecked(true);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(horizontal && i!=items.size()-1){
+                lp.setMargins(0,0,getDp(10),0);
+            }
+            cb.setLayoutParams(lp);
+
+            cb.setText(item.getValue());
+            cb.setId(myGenerateViewId());
+            cb.setTextSize(getTextSize());
+
+            cb.setSupportButtonTintList(ContextCompat.getColorStateList(act, R.color.primary));
+            wrapper.addView(cb);
+        }
+        views.put(field.getName(),wrapper);
+
+        if(wide) {
+            return getTitleWrap(wrapper,field);
+        }
+        return wrapper;
+    }
+
 
     protected String getLocalTable() {
         throw new UnsupportedOperationException("local table must implemented");
@@ -554,7 +622,10 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
     protected void initData(){
         if(model==null) model = getFormModel();
         Bundle data = model.select(getDataId());
-
+        if(data==null){
+            Log.i("jeki","data null with id: "+getDataId());
+            return;
+        }
         for(String key:data.keySet()){
             Field f = fields.getField(key);
             if(f!=null){
@@ -602,8 +673,28 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
             case DATE:
             case PICKER:
                 return f.getValue();
+            case CHECKBOX:
+                return getCheckboxValue(f);
             default: return null;
         }
+    }
+
+    private String getCheckboxValue(Field f) {
+        JSONObject json = new JSONObject();
+        LinearLayout wrapper = (LinearLayout) views.get(f.getName());
+        ArrayList<Item> items = f.getItems();
+        Item item;
+        for (int i = 0; i<wrapper.getChildCount(); i++){
+            item = items.get(i);
+            String value = item.getKode() == null ? item.getValue() : item.getValue();
+            CheckBox cb = (CheckBox) wrapper.getChildAt(i);
+            try {
+                json.put(value,cb.isChecked());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return json.toString();
     }
 
     private String getSpinnerValue(Field f) {
@@ -656,6 +747,7 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
                 case TEXTAREA:
                 case PASSWORD:
                 case IMAGE:
+                case CHECKBOX:
                 case NUMBER:
                     value = f.getValue();
                     break;
@@ -677,7 +769,7 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
                 throw new NullPointerException(f.getTitle());
             }
 
-            val.putString(f.getName(),value!=null?value:"");
+            val.putString(f.getName(),value!=null?value.trim():"");
         }
         return val;
     }
@@ -1294,10 +1386,6 @@ public abstract class Form extends LinearLayout implements FormInternetConnectio
 
     public void setAction(Action action) {
         this.action = action;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public void setModel(FormModel model) {

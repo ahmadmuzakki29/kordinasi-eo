@@ -8,49 +8,36 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.muzakki.ahmad.lib.Constant;
+
 import java.util.ArrayList;
 
 /**
  * Created by jeki on 7/12/16.
  */
 public class Database extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "kordinasi.db"; // change this
-    private static final String[] TABLES = new String[]{
-            "create table user(id integer primary key,username text," +
-                    "nama text, tipe_user text)",
-            "create table event(id integer primary key, nama text, tanggal text," +
-                    "tempat text, guest_star text, foto text,created_by text)",
-            "create table job(id integer primary key, event integer,nama text, tugas text," +
-                    "komentar text)"
-    };
 
-
-    private void resetTable(SQLiteDatabase sqLiteDatabase) {
-//        sqLiteDatabase.execSQL("drop table event");
-        sqLiteDatabase.execSQL(TABLES[2]);
-    }
 
     public Database(Context context){
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        for(String tb: TABLES){
+        for(String tb: Constant.TABLES){
             sqLiteDatabase.execSQL(tb);
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        resetTable(sqLiteDatabase);
+        Constant.resetTable(sqLiteDatabase);
         Log.i("jeki","upgrade");
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        resetTable(db);
+        Constant.resetTable(db);
     }
 
     @NonNull

@@ -106,7 +106,7 @@ public class Field implements Parcelable {
     }
 
     public enum Type{
-        TEXT,TEXTAREA, NUMBER, RADIO,DATE,SPINNER,IMAGE,PICKER, PASSWORD, SEPARATOR
+        TEXT,TEXTAREA, NUMBER, RADIO,DATE,SPINNER,IMAGE,PICKER, PASSWORD, SEPARATOR,CHECKBOX
     }
 
     public Field(String name,Type type){
