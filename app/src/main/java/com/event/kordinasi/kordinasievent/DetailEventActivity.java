@@ -70,7 +70,7 @@ public class DetailEventActivity extends DetailTabActivity implements List.Liste
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.add_job){
             Intent in = new Intent(this,JobFormActivity.class);
-            in.putExtra("id",id);
+            in.putExtra("id_event",id);
             in.putExtra("action", Form.Action.ADD);
             in.putExtra("title","Tambah Job");
             startActivityForResult(in,1);
