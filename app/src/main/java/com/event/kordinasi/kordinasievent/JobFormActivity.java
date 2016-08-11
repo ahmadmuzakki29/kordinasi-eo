@@ -27,11 +27,15 @@ public class JobFormActivity extends FormActivity implements DeleteDialog.Listen
         super.onCreate(savedInstanceState);
         id_event = getIntent().getStringExtra("id_event");
         fields = new Fields();
-        Field status = new Field("status", Field.Type.CHECKBOX);
-        ArrayList<Item> items= new ArrayList<>();
-        items.add(new Item("selesai"));
-        status.setItems(items);
-        fields.add(status);
+
+        if(getAction()== Form.Action.EDIT) {
+            Field status = new Field("status", Field.Type.CHECKBOX);
+            ArrayList<Item> items = new ArrayList<>();
+            items.add(new Item("selesai"));
+            status.setItems(items);
+            fields.add(status);
+        }
+
         Field nama = new Field("nama", Field.Type.TEXT);
         nama.setTitle("Nama Job");
         fields.add(nama);
